@@ -2,7 +2,14 @@ const { tmdbApi, TMDB_ENDPOINT } = require("../services/tmdb.services");
  
 const getActionTvShows = async (req, res) => {
     try {
-        const data = await tmdbApi.get(TMDB_ENDPOINT.fetchActionTvShows);
+        let data;
+        if(process.env.NODE_ENV === "development"){
+            console.log("seed file");
+            data = require("../seed_files/actionTv.json")
+        } else{
+            data = await tmdbApi.get(TMDB_ENDPOINT.fetchActionTvShows);
+        }
+
         data.results.forEach((item) => {
             item["media_type"] = "tv";
         });
@@ -20,7 +27,14 @@ const getActionTvShows = async (req, res) => {
 
 const getComedyTvShows = async (req, res) => {
     try {
-        const data = await tmdbApi.get(TMDB_ENDPOINT.fetchComedyTvShows);
+        let data;
+        if(process.env.NODE_ENV === "development"){
+            console.log("seed file");
+            data = require("../seed_files/comedyTv.json")
+        } else{
+            data = await tmdbApi.get(TMDB_ENDPOINT.fetchComedyTvShows);
+        }
+
         data.results.forEach((item) => {
             item["media_type"] = "tv";
         });
@@ -38,7 +52,14 @@ const getComedyTvShows = async (req, res) => {
 
 const getMysteryTvShows = async (req, res) => {
     try {
-        const data = await tmdbApi.get(TMDB_ENDPOINT.fetchMysteryTvShows);
+        let data;
+        if(process.env.NODE_ENV === "development"){
+            console.log("seed file");
+            data = require("../seed_files/mysteryTv.json")
+        } else{
+            data = await tmdbApi.get(TMDB_ENDPOINT.fetchMysteryTvShows);
+        }
+
         data.results.forEach((item) => {
             item["media_type"] = "tv";
         });
@@ -56,7 +77,14 @@ const getMysteryTvShows = async (req, res) => {
 
 const getDramaTvShows = async (req, res) => {
     try {
-        const data = await tmdbApi.get(TMDB_ENDPOINT.fetchDramaTvShows);
+        let data;
+        if(process.env.NODE_ENV === "development"){
+            console.log("seed file");
+            data = require("../seed_files/dramaTv.json")
+        } else{
+            data = await tmdbApi.get(TMDB_ENDPOINT.fetchDramaTvShows);
+        }
+
         data.results.forEach((item) => {
             item["media_type"] = "tv";
         });
@@ -74,7 +102,14 @@ const getDramaTvShows = async (req, res) => {
 
 const getCrimeTvShows = async (req, res) => {
     try {
-        const data = await tmdbApi.get(TMDB_ENDPOINT.fetchCrimeTvShows);
+        let data;
+        if(process.env.NODE_ENV === "development"){
+            console.log("seed file");
+            data = require("../seed_files/crimeTv.json")
+        } else{
+            data = await tmdbApi.get(TMDB_ENDPOINT.fetchCrimeTvShows);
+        }
+
         data.results.forEach((item) => {
             item["media_type"] = "tv";
         });

@@ -2,7 +2,14 @@ const { tmdbApi, TMDB_ENDPOINT } = require("../services/tmdb.services");
  
 const getActionMovies = async (req, res) => {
     try {
-        const data = await tmdbApi.get(TMDB_ENDPOINT.fetchActionMovies);
+        let data;
+        if(process.env.NODE_ENV === "development"){
+            console.log("seed file");
+            data = require("../seed_files/actionMovies.json")
+        } else{
+            data = await tmdbApi.get(TMDB_ENDPOINT.fetchActionMovies);
+        }
+
         res.status(200).json({
             status: "success",
             response: data
@@ -17,7 +24,13 @@ const getActionMovies = async (req, res) => {
 
 const getComedyMovies = async (req, res) => {
     try {
-        const data = await tmdbApi.get(TMDB_ENDPOINT.fetchComedyMovies);
+        let data;
+        if(process.env.NODE_ENV === "development"){
+            console.log("seed file");
+            data = require("../seed_files/comedyMovies.json")
+        } else{
+            data = await tmdbApi.get(TMDB_ENDPOINT.fetchComedyMovies);
+        }
 
         res.status(200).json({
             status: "success",
@@ -33,7 +46,13 @@ const getComedyMovies = async (req, res) => {
 
 const getHorrorMovies = async (req, res) => {
     try {
-        const data = await tmdbApi.get(TMDB_ENDPOINT.fetchHorrorMovies);
+        let data;
+        if(process.env.NODE_ENV === "development"){
+            console.log("seed file");
+            data = require("../seed_files/horrorMovies.json")
+        } else{
+            data = await tmdbApi.get(TMDB_ENDPOINT.fetchHorrorMovies);
+        }
 
         res.status(200).json({
             status: "success",
@@ -49,7 +68,13 @@ const getHorrorMovies = async (req, res) => {
 
 const getRomanceMovies = async (req, res) => {
     try {
-        const data = await tmdbApi.get(TMDB_ENDPOINT.fetchRomanceMovies);
+        let data;
+        if(process.env.NODE_ENV === "development"){
+            console.log("seed file");
+            data = require("../seed_files/romanceMovies.json")
+        } else{
+            data = await tmdbApi.get(TMDB_ENDPOINT.fetchRomanceMovies);
+        }
 
         res.status(200).json({
             status: "success",
@@ -65,7 +90,13 @@ const getRomanceMovies = async (req, res) => {
 
 const getAnimeMovies = async (req, res) => {
     try {
-        const data = await tmdbApi.get(TMDB_ENDPOINT.fetchAnimeMovies);
+        let data;
+        if(process.env.NODE_ENV === "development"){
+            console.log("seed file");
+            data = require("../seed_files/animeMovies.json")
+        } else{
+            data = await tmdbApi.get(TMDB_ENDPOINT.fetchActionMovies);
+        }
 
         res.status(200).json({
             status: "success",

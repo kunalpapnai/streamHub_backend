@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
+const morgan = require("morgan")
 
 dotenv.config(); // env ke variables
 
@@ -17,6 +18,7 @@ mongoose.connect(dbLink)
 // middleware
 app.use(express.json());
 app.use(cookieParser());
+app.use(morgan("dev"));
 
 const AuthRouter = require("./Routers/AuthRouter");
 const MovieRouter = require("./Routers/MovieRouter");

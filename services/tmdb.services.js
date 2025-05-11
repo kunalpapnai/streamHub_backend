@@ -38,6 +38,8 @@ const TMDB_ENDPOINT = {
 const tmdbApi = {
     get: async (endpoint) => {
         const url = tmdbBASEURL + endpoint;
+        // console.log("url",url);
+        // console.log("headers",headers);
         const response = await fetch(url, {method: 'GET', headers: headers});
         const data = await response.json();
         return data;
