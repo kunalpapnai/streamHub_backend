@@ -176,8 +176,7 @@ async function resetPasswordHandler(req, res){
             })
         }
 
-        const userId = req.params.userId;
-        const user = await userModel.findById(userId);
+        const user = await userModel.findOne({email: req.body.email});
         // if user is not present
         if(user == null){
             return res.status(404).json({
