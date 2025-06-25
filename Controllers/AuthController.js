@@ -21,8 +21,8 @@ async function signupHandler(req, res) {
         const user = await userModel.findOne({ email: userObject.email });
         if (user) {
             return res.status(400).json({
-                "message": "user is already logged in",
-                status: "success"
+                "message": "user is already signed up",
+                status: "failure"
             })
         }
 
@@ -48,7 +48,7 @@ async function signupHandler(req, res) {
 
 async function loginHandler(req, res) {
     // email, password -> if exist -> allow login 
-    //  cookies -> JWT -> they will bring back the token -> protected Route
+    // cookies -> JWT -> they will bring back the token -> protected Route
     try {
         const { email, password } = req.body;
         const user = await userModel.findOne({ email });
@@ -146,7 +146,7 @@ async function forgotPasswordHandler(req, res){
         })
 
         const templateData = {name: user.name, otp: user.otp};
-        await emailSender("../templates/otp.html", user.email, templateData);
+        await emailSender("./templates/otp.html", user.email, templateData);
 
     } catch(err){
         console.log("err", err);
