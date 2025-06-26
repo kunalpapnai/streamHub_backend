@@ -74,6 +74,7 @@ userSchema.pre("save", function(next){
 userSchema.post("save", function(){
     console.log("post save was called");
     this.__v = undefined;
+    this.password = undefined;
 })
 
 // final touchpoint
