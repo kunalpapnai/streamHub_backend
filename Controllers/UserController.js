@@ -42,13 +42,11 @@ const getUserWishlist = async (req, res) => {
 const addToWishlist = async (req, res) => {
     try {
         const userId = req.userId;
-        const {id} = req.body;
+        const { id, poster_path, media_type, name } = req.body;
         const user = await userModel.findById(userId);
         if (!user) {
             return res.status(404).send("User not found");
         }
-
-        let postItem;
 
         if (user.wishlist.find(item => item.id === id)) {
             return res.status(400).json({
@@ -58,9 +56,10 @@ const addToWishlist = async (req, res) => {
         }
 
         const wishlistItem = {
-            poster_path: postItem.poster_path,
-            name: postItem.title,
-            id: postItem.id
+            poster_path: poster_path,
+            name: name,
+            id: id,
+            media_type: media_type
         };
 
         user.wishlist.push(wishlistItem);
