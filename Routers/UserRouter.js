@@ -9,8 +9,8 @@ const { protectRouteMiddleWare } = require("../Controllers/AuthController");
 
 
 UserRouter.use(protectRouteMiddleWare);
+UserRouter.get("/wishlist", getUserWishlist);
 UserRouter.get("/", getCurrentUser);
 UserRouter.post("/wishlist", addToWishlist);
-UserRouter.get("/wishlist", getUserWishlist);
 
 module.exports = UserRouter;

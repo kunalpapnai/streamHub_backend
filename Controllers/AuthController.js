@@ -71,7 +71,7 @@ async function loginHandler(req, res) {
         // token create
         const authToken = await promisifiedJWTSign({ id: user["_id"] }, process.env.JWT_SECRET_KEY);
         // // token -> cookies
-        res.cookie("JWT", authToken, {
+        res.cookie("jwt", authToken, {
             maxAge: 1000 * 60 * 60 * 24,
             httpOnly: true, // it can only be accessed by the server
         })
@@ -231,7 +231,7 @@ async function resetPasswordHandler(req, res){
 
 const protectRouteMiddleWare = async function (req, res, next) {
     try {
-        let jwttoken = req.cookies.JWT;
+        let jwttoken = req.cookies.jwt;
         if (!jwttoken) throw new Error("UnAuthorized!");
 
         let decryptedToken = await promisifiedJWTVerify(jwttoken, process.env.JWT_SECRET_KEY);
@@ -252,7 +252,7 @@ const protectRouteMiddleWare = async function (req, res, next) {
 }
 
 const logoutController = function (req, res) {
-    res.cookie("JWT", "", {
+    res.cookie("jwt", "", {
         maxAge: Date.now(),
         httpOnly: true,
         path: "/",
