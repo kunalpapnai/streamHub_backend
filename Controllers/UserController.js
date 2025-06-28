@@ -50,7 +50,7 @@ const addToWishlist = async (req, res) => {
 
         if (user.wishlist.find(item => item.id === id)) {
             return res.status(400).json({
-                message: "Item already in wishlist",
+                message: "Item already in watchlist",
                 status: "failure",
             });
         }
