@@ -112,8 +112,8 @@ async function forgotPasswordHandler(req, res){
          *         
          * ***/
         // 1.
-        if(req.body.email == undefined){
-            return res.status(401).json({
+        if(!req?.body?.email){
+            return res.status(400).json({
                 status: "failure",
                 message: "Please enter the email for forgotten password"
             })
@@ -176,7 +176,7 @@ async function resetPasswordHandler(req, res){
             })
         }
 
-        const user = await userModel.findOne({email: req.body.email});
+        const user = await userModel.findOne({email: req?.body?.email});
         // if user is not present
         if(user == null){
             return res.status(404).json({
@@ -186,7 +186,7 @@ async function resetPasswordHandler(req, res){
         }
 
         // if otp is not present in db user
-        if(user.otp == undefined){
+        if(user?.otp == undefined){
             return res.status(401).json({
                 status: "failure",
                 message: "unauthorised access to reset password",
