@@ -74,6 +74,7 @@ async function loginHandler(req, res) {
         res.cookie("jwt", authToken, {
             maxAge: 1000 * 60 * 60 * 24,
             httpOnly: true, // it can only be accessed by the server
+            secure: true,
         })
 
         // res send
@@ -253,10 +254,9 @@ const protectRouteMiddleWare = async function (req, res, next) {
 
 const logoutController = function (req, res) {
     res.cookie("jwt", "", {
-        maxAge: Date.now(),
+        // how much time
+        maxAge: 0,
         httpOnly: true,
-        path: "/",
-        sameSite: "None",
         secure: true,
     });
 
