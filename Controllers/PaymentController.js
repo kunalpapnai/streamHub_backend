@@ -8,7 +8,7 @@ const razorpay = new Razorpay({
 
 // create the order so that user can checkout on frontend 
 const getPaymentController = async (req, res) => {
-    console.log("req", req);
+
     try {
         const data = await razorpay.orders.create({
             amount: req.body.amount * 100,
@@ -33,7 +33,7 @@ const updatePremiumAccessController = async (req, res) => {
             return res.status(404).json({ error: "User not found" });
         }
         user.premiumAccess = true;
-        //  find and update the user with the new premium access status
+        // find and update the user with the new premium access status
         await userModel.findOneAndUpdate(
             { email: email },
             { $set: { isPremium: true } },
