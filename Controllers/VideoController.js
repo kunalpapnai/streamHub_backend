@@ -34,7 +34,7 @@ const getVideoStream = async (req, res) => {
         // Check if the header includes range
         const range = req.headers.range;
         if (!range) {
-            res.status(400).send("Missing range header");
+            return res.status(400).send("Missing range header");
         }
 
         const videoPath = "videos/" + id + ".mp4"; // path of the video
