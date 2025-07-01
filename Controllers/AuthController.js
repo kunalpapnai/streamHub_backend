@@ -75,6 +75,8 @@ async function loginHandler(req, res) {
             maxAge: 1000 * 60 * 60 * 24,
             httpOnly: true, // it can only be accessed by the server
             secure: true,
+            sameSite: 'None',
+            path: '/',
         })
 
         // res send
@@ -258,6 +260,8 @@ const logoutController = function (req, res) {
         maxAge: 0,
         httpOnly: true,
         secure: true,
+        sameSite: 'None',
+        path: '/',
     });
 
     res.status(200).json({
