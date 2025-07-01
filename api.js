@@ -44,7 +44,8 @@ app.use("/api/user", UserRouter);
 app.use("/api/payment", PaymentRouter);
 app.use("/api/video", VideoRouter);
 
+const PORT = process.env.PORT || 3001;
 
-app.listen(3001, function(){
-    console.log("server started on port 3001");
+app.listen(PORT, function(){
+    console.log(`server started on port ${PORT}`);
 })
