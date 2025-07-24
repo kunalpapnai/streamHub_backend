@@ -62,15 +62,16 @@ const addToWishlist = async (req, res) => {
             media_type: media_type
         };
 
-        user.wishlist.push(wishlistItem);
-        await userModel.findOneAndUpdate(
+        const updatedUser = await userModel.findOneAndUpdate(
             { _id: userId },
             { $push: { wishlist: wishlistItem } },
             { new: true, upsert: true } // options to return the updated document and create if it doesn't exist
         );
 
         res.status(200).json({
+            user: updatedUser,
             status: "success",
+            message: "Item added to wishlist successfully",
         });
     } catch (error) {
         console.log("error: ", error);
@@ -81,4 +82,46 @@ const addToWishlist = async (req, res) => {
     }
 };
 
-module.exports = { getCurrentUser, getUserWishlist, addToWishlist };
+const deleteFromWishlist = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { id } = req.body; // Only need the item ID for deletion
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        status: "failure",
+      });
+    }
+
+    // Check if item exists in wishlist before attempting to remove
+    if (!user.wishlist.some((item) => item.id === id)) {
+      return res.status(404).json({
+        message: "Item not found in wishlist",
+        status: "failure",
+      });
+    }
+
+    // Remove the item from wishlist using $pull operator
+    const updatedUser = await userModel.findByIdAndUpdate(
+      { _id: userId },
+      { $pull: { wishlist: { id: id } } },
+      { new: true }
+    );
+
+    // Send success response
+    res.status(200).json({
+      user: updatedUser,
+      status: "success",
+      message: "Item removed from wishlist successfully",
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+      status: "failure",
+    });
+  }
+};
+
+module.exports = { getCurrentUser, getUserWishlist, addToWishlist, deleteFromWishlist };
