@@ -35,7 +35,7 @@ const schemaRules = {
         minLength: 6,
         //custom validation
         validate: [function(){
-            return this.password == this.confirmPassword;
+            return this.password === this.confirmPassword;
         }, "password should be equal to confirm password"],
     },
     createdAt: {

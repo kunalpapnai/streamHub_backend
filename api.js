@@ -5,6 +5,9 @@ const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const cors = require("cors");
+const expressMongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 
 dotenv.config(); // env ke variables
 
@@ -16,17 +19,32 @@ mongoose.connect(dbLink)
         console.log("connected to db");
     }).catch(err => console.log(err));
 
-// middleware
-app.use(express.json());
-app.use(cookieParser());
-app.use(morgan("dev"));
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+    standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+    // store: ... , // Redis, Memcached, etc. See below.
+})
+
 const corsConfig = {
     origin: true,
     credentials: true,
 };
+
+// middlewares
 // every route can be used by some other server
 app.use(cors(corsConfig));
 app.options("*", cors(corsConfig));
+
+app.use(limiter);
+app.use(express.json());
+app.use(cookieParser());
+app.use(morgan("dev"));
+app.use(expressMongoSanitize());
+app.use(helmet());
+
 
 const AuthRouter = require("./Routers/AuthRouter");
 const MovieRouter = require("./Routers/MovieRouter");

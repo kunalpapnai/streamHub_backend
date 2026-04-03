@@ -4,11 +4,13 @@ const jwt = require("jsonwebtoken");
 const promisify = require("util").promisify;
 const promisifiedJWTSign = promisify(jwt.sign);
 const promisifiedJWTVerify = promisify(jwt.verify);
+const bcrypt = require("bcrypt");
 
 async function signupHandler(req, res) {
     // 3. create the user
     try {
         const userObject = req.body;
+        console.log("userObject", userObject);
         // 1. user -> data get , check email , password
         if (!userObject.email || !userObject.password) {
             return res.status(400).json({
@@ -26,8 +28,14 @@ async function signupHandler(req, res) {
             })
         }
 
-        const newUser = await userModel.create(userObject);
         // hash the new user password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(userObject.password, salt);
+        const hashedConfirmPassword = await bcrypt.hash(userObject.confirmPassword, salt);
+        userObject.password = hashedPassword;
+        userObject.confirmPassword = hashedConfirmPassword;
+        const newUser = await userModel.create(userObject);
+
         // send a response 
         res.status(201).json({
             "message": "user signup successfully",
@@ -59,8 +67,8 @@ async function loginHandler(req, res) {
             })
         }
 
-        // hash the password   
-        const areEqual = password == user.password;
+        // compare the password   
+        const areEqual = await bcrypt.compare(password, user.password);
         if (!areEqual) {
             return res.status(400).json({
                 message: "Invalid email or password",
@@ -212,8 +220,9 @@ async function resetPasswordHandler(req, res){
             })
         }
 
-        user.password = resetDetails.password;
-        user.confirmPassword = resetDetails.confirmPassword;
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(resetDetails.password, salt);
+        user.confirmPassword = await bcrypt.hash(resetDetails.confirmPassword, salt);
         // remove the otp from the user
         user.otp = undefined;
         user.otpExpiry = undefined;
